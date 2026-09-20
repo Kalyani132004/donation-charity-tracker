@@ -1,123 +1,135 @@
-# Donation & Charity Tracker
+# KindTrack
 
-A Laravel 12 web application to manage donors, record donations, group them into financial categories, print receipts, and generate reports — built as a college case-study project.
+> Tracking Giving • Brighter Tomorrows
+
+KindTrack is a Laravel 12 web application developed as a college case-study project for managing donors, donations, charitable causes, receipts, and reports.
 
 ## Tech Stack
 
-- **Backend:** PHP, Laravel 12, MySQL
-- **Frontend:** Blade, Bootstrap 5, Bootstrap Icons, Chart.js (CDN)
-- **Auth:** Laravel session auth with role-based middleware (Admin / Staff)
+- **Backend:** PHP, Laravel 12
+- **Frontend:** Blade, Bootstrap 5, Bootstrap Icons
+- **Database:** MySQL
+- **Charts:** Chart.js
 
 ## Features
 
-- Donor management (add, edit, delete, search, donation history)
-- Cause management with progress bar (raised vs target amount)
-- Donation recording with auto-generated receipt numbers (`REC-2026-0001`, resets yearly)
-- Printable donation receipts (browser print, dedicated print stylesheet)
-- Reports: donor-wise, cause-wise, mode-wise, category-wise, date-wise (all with date filters)
-- Dashboard with live stats (totals, monthly chart, top causes, mode/category summary)
-- Two roles: **Admin** (full access + staff management) and **Staff** (day-to-day recording)
-- Public sign-up (creates Staff accounts only; Admin role is assigned only from the Staff Users page)
+- Donor management with search and donation history
+- Cause management with donation progress tracking
+- Donation recording with automatic receipt numbers
+- Printable donation receipts
+- Donor and cause image support
+- Dashboard with donation statistics and charts
+- Donor-wise, cause-wise, mode-wise and date-wise reports
+- Admin and Staff role-based access
+- Staff account management
+- Public Staff registration
+- User profile management
 
-## Login In 
-### Admin 
-email - admin@example.com
-pass - password 
+## Roles
 
-### Staff 
-email - staff@example.com
-pass - password
+### Admin
+
+- Manage donors, causes and donations
+- View dashboard and reports
+- Manage staff accounts
+- Full system access
+
+### Staff
+
+- Manage donors
+- Record donations
+- Manage causes
+- View reports and receipts
+
+## Installation
+
+### 1. Clone the Repository
+
+Clone the project from GitHub and open the project folder:
+
+    git clone <your-repository-url>
+    cd donation-charity-tracker
+
+### 2. Install Dependencies
+
+Install Laravel's PHP dependencies:
+
+    composer install
+
+### 3. Create Environment File
+
+Create the `.env` file from the example file:
+
+    copy .env.example .env
+
+Generate the Laravel application key:
+
+    php artisan key:generate
+
+### 4. Create MySQL Database
+
+Open MySQL and create the database:
+
+    CREATE DATABASE donation_tracker;
+
+### 5. Configure Database
+
+Open the `.env` file and configure your MySQL connection:
+
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=donation_tracker
+    DB_USERNAME=root
+    DB_PASSWORD=your_mysql_password
+
+Replace `your_mysql_password` with your local MySQL password.
 
 
-## Setup Instructions
 
-### 1. Create the Laravel project
+### 8. Run Migrations and Seed Demo Data
 
-```bash
-composer create-project laravel/laravel donation-tracker
-cd donation-tracker
-```
+Run the database migrations:
 
-### 2. Copy in the project files
+    php artisan migrate
 
-Copy the `app/`, `database/`, `resources/views/`, `routes/web.php`, `bootstrap/app.php`, and `public/css/` files from this codebase into the matching paths in your new project (overwrite where filenames match).
+Then seed the demo data:
 
-### 3. Configure the database
+    php artisan db:seed
 
-Create a MySQL database:
+This creates demo users, donors, causes, and donations.
 
-```sql
-CREATE DATABASE donation_tracker;
-```
+### 9. Start the Application
 
-Copy `.env.example` to `.env` and set:
-DB_DATABASE=donation_tracker
-DB_USERNAME=root
-DB_PASSWORD=your_mysql_password
+Start the Laravel development server:
+
+    php artisan serve
+
+Open the application in your browser:
+
+    http://127.0.0.1:8000
+
+## Demo Login
+
+### Admin
+
+- **Email:** admin@example.com
+- **Password:** password
+
+### Staff
+
+- **Email:** staff@example.com
+- **Password:** password
 
 
+## Reset Demo Data
 
-### 4. Install dependencies and generate the app key
+To remove the existing database tables and recreate the demo data:
 
-```bash
-composer install
-php artisan key:generate
-```
+    php artisan migrate:fresh --seed
 
-### 5. Register the role middleware
+> Use this command only in a development environment because it deletes existing database data.
 
-In `bootstrap/app.php`, make sure this is present inside `withMiddleware()`:
+## Project Purpose
 
-```php
-$middleware->alias([
-    'role' => \App\Http\Middleware\RoleMiddleware::class,
-]);
-```
-
-### 6. Register the custom pagination view
-
-In `app/Providers/AppServiceProvider.php`:
-
-```php
-use Illuminate\Pagination\Paginator;
-
-public function boot(): void
-{
-    Paginator::defaultView('vendor.pagination.bootstrap-5');
-}
-```
-
-### 7. Run migrations and seed demo data
-
-```bash
-php artisan migrate
-php artisan db:seed
-```
-
-This creates:
-- 2 users (1 Admin, 1 Staff)
-- 5 donors
-- 3 causes
-- 8 donations
-
-**Demo credentials** (development only):
-- Admin: `admin@example.com` / `password`
-- Staff: `staff@example.com` / `password`
-
-### 8. Start the server
-
-```bash
-php artisan serve
-```
-
-Visit `http://127.0.0.1:8000` — you'll be redirected to `/login`.
-
-## Resetting Demo Data
-
-To wipe everything and reseed fresh demo data:
-
-```bash
-php artisan migrate:fresh --seed
-```
-.
-
+KindTrack was developed as an academic project to demonstrate Laravel MVC, MySQL database integration, CRUD operations, authentication, role-based authorization, form validation, reporting, receipt generation, and dashboard development.
