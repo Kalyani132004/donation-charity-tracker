@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Donor extends Model
 {
@@ -17,6 +18,7 @@ class Donor extends Model
         'address',
         'city',
         'state',
+        'photo',
     ];
 
     public function donations()
@@ -29,9 +31,17 @@ class Donor extends Model
         return $this->donations()->sum('amount');
     }
 
-    /**
-     * Generate the next donor code, e.g. DNR-0001
-     */
+    
+    // Public URL for the donor's photo, or null if none uploaded.
+    
+    public function photoUrl(): ?string
+    {
+        return $this->photo ? Storage::url($this->photo) : null;
+    }
+
+    
+    // Generate the next donor code
+    
     public static function generateDonorCode(): string
     {
         $last = static::orderByDesc('id')->first();
