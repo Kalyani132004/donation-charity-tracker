@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Cause extends Model
 {
@@ -14,6 +15,7 @@ class Cause extends Model
         'description',
         'target_amount',
         'status',
+        'image',
     ];
 
     protected function casts(): array
@@ -33,9 +35,9 @@ class Cause extends Model
         return $this->donations()->sum('amount');
     }
 
-    /**
-     * Percentage of target amount collected so far (capped at 100).
-     */
+    
+    // Percentage of target amount collected so far (capped at 100).
+    
     public function progressPercentage(): float
     {
         if ($this->target_amount <= 0) {
@@ -45,5 +47,13 @@ class Cause extends Model
         $percentage = ($this->totalCollected() / $this->target_amount) * 100;
 
         return round(min($percentage, 100), 1);
+    }
+
+    
+    // Public URL for the cause's banner image, or null if none uploaded.
+    
+    public function imageUrl(): ?string
+    {
+        return $this->image ? Storage::url($this->image) : null;
     }
 }
