@@ -10,6 +10,7 @@ use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', fn () => redirect()->route('login'));
 
@@ -28,6 +29,9 @@ Route::post('/logout', [LoginController::class, 'logout'])
 // Authenticated routes — both admin and staff
 Route::middleware(['auth', 'role:admin,staff'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::resource('donors', DonorController::class);
     Route::resource('causes', CauseController::class)->except(['destroy']);
